@@ -11,6 +11,7 @@ import (
 	"github.com/pborman/uuid"
 	"context"
 	"cloud.google.com/go/bigtable"
+	"strings"
 )
 
 type Location struct {
@@ -27,6 +28,7 @@ const (
 	BT_INSTANCE = "around-post"
 	// Needs to update this URL if you deploy it to cloud.
 	ES_URL = "http://52.89.44.203:9200"
+	SPAM_WORD = "Ass"
 )
 
 type Post struct {
@@ -185,8 +187,11 @@ func handlerSearch(w http.ResponseWriter, r *http.Request) {
 	for _, item := range searchResult.Each(reflect.TypeOf(typ)) {
 		p := item.(Post)
 		fmt.Printf("Post by %s: %s at lat %v and lon %v\n", p.User, p.Message, p.Location.Lat, p.Location.Lon)
-		// TODO(vincent): Perform filtering based on keywords such as web spam etc.
-		ps = append(ps, p)
+
+		// Perform filtering based on keywords such as web spam etc.
+		if strings.Contains(p.Message, SPAM_WORD) == false {
+			ps = append(ps, p)
+		}
 
 	}
 	js, err := json.Marshal(ps)
