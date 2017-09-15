@@ -24,10 +24,10 @@ const (
 	TYPE     = "post"
 	DISTANCE = "200km"
 	// Needs to update
-	PROJECT_ID = "optimal-oasis-176123"
+	PROJECT_ID = "around-180019"
 	BT_INSTANCE = "around-post"
 	// Needs to update this URL if you deploy it to cloud.
-	ES_URL = "http://52.89.44.203:9200"
+	ES_URL = "http://50.112.70.5:9200"
 	SPAM_WORD = "Ass"
 )
 
