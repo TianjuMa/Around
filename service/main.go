@@ -24,17 +24,17 @@ const (
 	TYPE     = "post"
 	DISTANCE = "200km"
 	// Needs to update
-	PROJECT_ID = "around-180019"
+	PROJECT_ID  = "around-180019"
 	BT_INSTANCE = "around-post"
 	// Needs to update this URL if you deploy it to cloud.
-	ES_URL = "http://50.112.70.5:9200"
+	ES_URL    = "http://50.112.70.5:9200"
 	SPAM_WORD = "Ass"
 )
 
 type Post struct {
 	// `json:"user"` is for the json parsing of this User field. Otherwise, by default it's 'User'.
-	User     string `json:"user"`
-	Message  string  `json:"message"`
+	User     string   `json:"user"`
+	Message  string   `json:"message"`
 	Location Location `json:"location"`
 }
 
@@ -105,8 +105,8 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 		Id(id).
 		BodyJson(p).
 		Refresh(true).
-
 		Do()
+
 	if err != nil {
 		panic(err)
 		return
@@ -138,7 +138,6 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Printf("Post is saved to BigTable: %s\n", p.Message)
 }
-
 
 func handlerSearch(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Received one Search request")
@@ -189,7 +188,7 @@ func handlerSearch(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Post by %s: %s at lat %v and lon %v\n", p.User, p.Message, p.Location.Lat, p.Location.Lon)
 
 		// Perform filtering based on keywords such as web spam etc.
-		if strings.Contains(p.Message, SPAM_WORD) == false {
+		if !strings.Contains(p.Message, SPAM_WORD) {
 			ps = append(ps, p)
 		}
 
